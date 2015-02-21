@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'google/api_client'
 
 # boot bundler
 require "bundler"
