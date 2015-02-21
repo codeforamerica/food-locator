@@ -32,7 +32,7 @@ class FoodEventLocator
                                             'timeMin' => now})
 
 
-    item = result.data.items[0]
+    item = result.data.items[0].start.dateTime
 
     # time = Time.parse item.created
 
