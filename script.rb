@@ -14,14 +14,17 @@ require 'google/api_client'
 
   calendar = client.discovered_api('calendar', 'v3')
 
-now = Time.now
+now = Time.now.strftime('%FT%T%:z')
 page_token = nil
   result = client.execute(:api_method => calendar.events.list,
-                          :parameters => {'calendarId' => 'codeforamerica.org_jjcbvgie0a5nr654vsp83cjn5g@group.calendar.google.com'})
+                          :parameters => {'calendarId' => 'codeforamerica.org_jjcbvgie0a5nr654vsp83cjn5g@group.calendar.google.com',
+                                          'maxResults' => '1',
+                                          'singleEvents' => 'true',
+                                          'timeMin' => now})
   while true
     events = result.data.items
     events.each do |e|
-      puts e.summary + "\n"
+      puts (e.summary.nil? ? "" : e.summary + " ") + (e.location.nil? ? "" : e.location + " ") + e.start.dateTime.inspect + "\n"
     end
     if !(page_token = result.data.next_page_token)
       break
