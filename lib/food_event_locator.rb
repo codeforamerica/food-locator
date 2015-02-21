@@ -1,5 +1,6 @@
 require 'google/api_client'
 require 'time'
+require 'tzinfo'
 
 class FoodEventLocator
 
