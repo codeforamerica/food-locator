@@ -8,6 +8,7 @@ Bundler.setup
 require 'rack'
 require 'sinatra'
 require 'json'
+require 'twilio-ruby'
 
 # hand over exception handling to our handlers defined below
 disable :show_exceptions
@@ -17,6 +18,12 @@ set :protection, :except => :json_csrf
 
 client = Google::APIClient.new
 
+# # put your own credentials here
+account_sid = 'AC2738c42b6d6a978bb08219565aa2385c'
+auth_token = '31bfaaf56b068e1f17de3a41d66178ac'
+#
+# # set up a client to talk to the Twilio REST API
+TWILIO_CLIENT = Twilio::REST::Client.new account_sid, auth_token
 key = Google::APIClient::KeyUtils.load_from_pkcs12('food-locator-142509f4f6e5.p12', 'notasecret')
 client.authorization = Signet::OAuth2::Client.new(
     :token_credential_uri => 'https://accounts.google.com/o/oauth2/token',
@@ -48,6 +55,43 @@ end
 
 get '/hi' do
 
+FROM_NUMBER = '+19162356999'
+
+
+
+def get_next_event
+  return {:date => 'Sometime', :location => 'Someloc'}
+end
+
+
+def format_event(event)
+  "Next food distribution is on #{event[:date]} located at #{event[:location]}"
+end
+
+post '/sms' do
+
+  puts "Inbound sms from #{@params['From']} with message #{@params['Body']}"
+
+  event = get_next_event
+
+  TWILIO_CLIENT.messages.create(
+      from: FROM_NUMBER,
+      to: @params['From'],
+      body: format_event(event)
+  )
+
+  "OK"
+end
+
+
+
+post '/hi' do
+
+  puts "Request: #{request.inspect}"
+
+  "Sup"
   response
 
 end
+end
+
