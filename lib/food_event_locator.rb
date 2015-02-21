@@ -35,7 +35,10 @@ class FoodEventLocator
 
     # time = Time.parse item.created
 
-    {:date => item.created.strftime('%m/%d/%Y %I:%M%p'), :location => item.location}
+    # eventually get senders timezone
+    tz = TZInfo::Timezone.get('America/Los_Angeles')
+
+    {:date => tz.utc_to_local(item.created).strftime('%m/%d/%Y %I:%M%p'), :location => item.location}
   end
 
 end
