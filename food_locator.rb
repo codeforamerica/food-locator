@@ -31,7 +31,7 @@ calendar = client.discovered_api('calendar', 'v3')
 page_token = nil
 result = client.execute(:api_method => calendar.events.list,
                           :parameters => {'calendarId' => 'codeforamerica.org_jjcbvgie0a5nr654vsp83cjn5g@group.calendar.google.com'})
-response
+response = ""
 while true
   events = result.data.items
   events.each do |e|

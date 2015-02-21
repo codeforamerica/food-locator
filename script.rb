@@ -14,6 +14,7 @@ require 'google/api_client'
 
   calendar = client.discovered_api('calendar', 'v3')
 
+now = Time.now
 page_token = nil
   result = client.execute(:api_method => calendar.events.list,
                           :parameters => {'calendarId' => 'codeforamerica.org_jjcbvgie0a5nr654vsp83cjn5g@group.calendar.google.com'})
